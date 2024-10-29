@@ -1,11 +1,14 @@
 package study.musinsa_project.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import study.musinsa_project.entity.UserStatus;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,4 +42,15 @@ public class Users {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status", nullable = false)
     private UserStatus status;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Product> products;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<CartItems> cartItems;
+
+
 }
