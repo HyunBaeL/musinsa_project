@@ -17,7 +17,7 @@ public class CartItems {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Users user;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
