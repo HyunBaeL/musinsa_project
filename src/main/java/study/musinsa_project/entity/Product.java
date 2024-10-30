@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import study.musinsa_project.dto.ProductDetailResposeDTO;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class Product
     @Column(name = "amount", nullable = false)
     private int amount; // 상품 재고 수량
 
-    @Column(name = "imgs", length = 255)
-    private String imgs; // 상품 이미지 URL
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> imgs; // 상품 이미지 URL
 
     @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction; // 상품 설명
@@ -54,4 +56,15 @@ public class Product
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private List<CartItems> cartItems;
+
+    public ProductDetailResposeDTO getProductDetailResposeDTO(Product product) {
+        return ProductDetailResposeDTO.builder()
+                .id(product.getId())
+                .amount(product.getAmount())
+                .price(product.getPrice())
+                .name(product.getItemName())
+                .introduction(product.getIntroduction())
+                .imgs(product.getImgs())
+                .build();
+    }
 }
