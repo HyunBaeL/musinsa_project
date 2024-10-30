@@ -37,6 +37,8 @@ public class MyPageService {
 
     public MyPageCartResponse selectMyPageCart(int userId) {
         List<CartItems> cartItems = cartItemsRepository.selectUserId(userId);
+        log.info(cartItems.toString());
+
         List<MyPageCartDetailResponse> productDetails = new ArrayList<>();
 
         for (CartItems cartItem : cartItems) {
@@ -46,7 +48,7 @@ public class MyPageService {
                     .itemName(product.getItemName())
                     .price(product.getPrice())
                     .amount(product.getAmount())
-                    .imgs(product.getImgs())
+                    .imgs(product.getImgs().get(0))
                     .introduction(product.getIntroduction())
                     .startDate(product.getStartDate())
                     .endDate(product.getEndDate())
