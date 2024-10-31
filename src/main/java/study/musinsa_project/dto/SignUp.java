@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SignUp {
-    // 회원가입 관련
     @NotNull(message = "userName은 필수")
     private String userName;
     @NotNull(message = "password는 필수")
