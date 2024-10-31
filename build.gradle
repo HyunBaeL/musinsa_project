@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.5'
-    id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.springframework.boot' version '2.7.14'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 group = 'study'
@@ -38,9 +38,21 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // jwt 추가하기
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // security 추가하기
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.hibernate.validator:hibernate-validator:6.0.13.Final'
+    implementation 'org.glassfish:javax.el:3.0.0'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final' // MapStruct
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
 }
