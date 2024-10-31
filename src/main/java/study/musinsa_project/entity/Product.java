@@ -30,8 +30,8 @@ public class Product
     @Column(name = "amount", nullable = false)
     private int amount; // 상품 재고 수량
 
-    @Column(name = "imgs", length = 255)
-    private String imgs; // 상품 이미지 URL
+    @Column(name = "images", columnDefinition = "TEXT")  // 이건 나중에 해결해야함
+    private String images; // 상품 이미지 URL 을 리스트로 받을것임
 
     @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction; // 상품 설명
@@ -44,14 +44,18 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false, columnDefinition = "ENUM('Y', 'N') DEFAULT 'Y'")
-    private State state; // 상품 상태
+    private ProductState state; // 상품 상태
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false, columnDefinition = "ENUM('상의', '하의')")
+    private ProductCategory category; // 상품 상태
 
 
-    public enum State {
-        Y, N
-    }
 
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private List<CartItems> cartItems;
+
+
+
 }

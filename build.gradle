@@ -32,6 +32,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final' // MapStruct
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+
 }
 
 tasks.named('test') {

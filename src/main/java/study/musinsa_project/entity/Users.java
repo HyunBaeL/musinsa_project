@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import study.musinsa_project.entity.UserStatus;
 
 import java.util.List;
 
@@ -15,11 +14,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+public class Users
+{
     // user Entity
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_idx", nullable = false)
-    private Integer idx;
+    private Long idx;
 
     @Column(name = "user_name", nullable = false)
     private String userName;
