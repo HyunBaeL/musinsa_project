@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class SignUpController {
-
+    // 회원가입 관련
     private final SignUpService signUpService;
 
     @PostMapping("/signup")

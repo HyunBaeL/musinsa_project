@@ -10,6 +10,7 @@ import study.musinsa_project.repository.UsersRepository;
 @Service
 @RequiredArgsConstructor
 public class SignUpService {
+    // 회원가입 관련
 
     private final UsersRepository usersRepository;
 

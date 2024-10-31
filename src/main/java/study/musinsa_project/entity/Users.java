@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Users {
-    // user Entity
+    // // 회원가입 관련 사용
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_idx", nullable = false)
