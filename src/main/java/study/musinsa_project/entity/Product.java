@@ -46,12 +46,13 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false, columnDefinition = "ENUM('Y', 'N') DEFAULT 'Y'")
-    private State state; // 상품 상태
+    private ProductState state; // 상품 상태
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false, columnDefinition = "ENUM('상의', '하의')")
+    private ProductCategory category; // 상품 상태
 
 
-    public enum State {
-        Y, N
-    }
 
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
@@ -68,4 +69,5 @@ public class Product
                 .username(product.getUser().getUserName())
                 .build();
     }
+
 }

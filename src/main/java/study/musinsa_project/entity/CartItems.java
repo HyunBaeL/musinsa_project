@@ -13,6 +13,7 @@ import study.musinsa_project.dto.CartItemsRequestDTO;
 @Setter
 @AllArgsConstructor
 public class CartItems {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
