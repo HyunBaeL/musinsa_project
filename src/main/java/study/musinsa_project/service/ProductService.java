@@ -27,11 +27,14 @@ public class ProductService {
     public List<ProductListResponseDTO> getProductAll() {
 
         return productRepository.findAllByOrderByIdDesc()
-                .stream().map(product -> ProductListResponseDTO.builder()
+                .stream().filter(product -> product.getAmount() > 0)
+                        .map(product -> ProductListResponseDTO.builder()
                         .id(product.getId())
                         .price(product.getPrice())
                         .name(product.getItemName())
                         .mainImg(product.getImgs().get(0))
+                        .username(product.getUser().getUserName())
+                        .amount(product.getAmount())
                         .build())
                 .collect(Collectors.toList());
     }
