@@ -14,6 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class SignUpController {
+    // 컨트롤러도 boolean -> String 변경
 
     private final SignUpService signUpService;
 

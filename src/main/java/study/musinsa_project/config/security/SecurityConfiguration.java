@@ -17,6 +17,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    // 비활성화
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
