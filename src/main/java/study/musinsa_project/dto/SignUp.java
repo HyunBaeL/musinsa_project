@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SignUp {
-    // SignUp DTO 변경
 
     @NotNull(message = "userName은 필수")
     private String userName;

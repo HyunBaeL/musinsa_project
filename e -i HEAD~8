@@ -1,0 +1,13 @@
+[33m9d7c907[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32m24-feat-회원가입-기능-생성[m[33m, [m[1;32mdev[m[33m)[m 임시 커밋: 회ì기능관련
+[33mc304516[m Merge pull request #14 from HyunBaeL/13-feat-상품-조회-로직-기능
+[33m21f9b22[m[33m ([m[1;31morigin/13-feat-상품-조회-로직-기능[m[33m)[m 🛠chore: 테이블 간 관계 설정
+[33m1ac9799[m Merge pull request #11 from HyunBaeL/7-feat-users-entity-생성
+[33mdcdf378[m[33m ([m[1;31morigin/7-feat-users-entity-생성[m[33m, [m[1;32m7-feat-users-entity-생성[m[33m)[m User Entity 생성
+[33m244c83d[m chore : Update CartItems.java
+[33m5eab6e2[m Merge pull request #10 from HyunBaeL/9-feat-product-entity-생성
+[33m4fa77a7[m[33m ([m[1;31morigin/9-feat-product-entity-생성[m[33m)[m ✨feat: Product Entity 생성
+[33ma848bac[m ✨feat : 6-feat-cartitems-테이블-생성
+[33md51afd6[m[33m ([m[1;31morigin/6-feat-cartitems-테이블-생성[m[33m)[m ✨feat: CartItems 테이블 생성
+[33mf4cdaba[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/24-feat-회원가입-기능-생성[m[33m, [m[1;31morigin/19-fix-productentity-필드-수정으로-인한-에러-수정[m[33m, [m[1;31morigin/12-feat-user-엔티티-연관관계-설정[m[33m)[m Merge pull request #3 from HyunBaeL/2-feat-깃연동-테스트
+[33mc3ab023[m ✨feat: project 초기 세팅
+[33mace3a3c[m ✨feat: project 초기 세팅
