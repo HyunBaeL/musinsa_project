@@ -14,4 +14,6 @@ public class ProductListResponseDTO {
     private String name;
     private int price;
     private String mainImg;
+    private int amount;
+    private String username;
 }

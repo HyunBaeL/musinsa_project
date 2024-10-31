@@ -6,8 +6,10 @@ import study.musinsa_project.entity.CartItems;
 
 import java.util.List;
 
-public interface CartItemsRepository extends JpaRepository<CartItems, Integer> {
+public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
 
     @Query("select c from CartItems c where c.user.idx = :userId")
     List<CartItems> selectUserId(int userId);
+
+
 }

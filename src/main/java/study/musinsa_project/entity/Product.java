@@ -65,6 +65,7 @@ public class Product
                 .name(product.getItemName())
                 .introduction(product.getIntroduction())
                 .imgs(product.getImgs())
+                .username(product.getUser().getUserName())
                 .build();
     }
 }

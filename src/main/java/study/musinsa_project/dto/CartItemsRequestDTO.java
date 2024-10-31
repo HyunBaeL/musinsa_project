@@ -5,9 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 @Builder
-public class MyPageUserResponse {
-    private long id;
-    private String nickName;
+@AllArgsConstructor
+public class CartItemsRequestDTO {
+    private long productId;
+    private int quantity;
+    private long userIdx;
 }

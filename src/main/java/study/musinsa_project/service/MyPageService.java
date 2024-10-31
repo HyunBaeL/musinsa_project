@@ -46,7 +46,7 @@ public class MyPageService {
                     .itemName(product.getItemName())
                     .price(product.getPrice())
                     .amount(product.getAmount())
-                    .imgs(product.getImgs())
+                    .imgs(product.getImgs().get(0))
                     .introduction(product.getIntroduction())
                     .startDate(product.getStartDate())
                     .endDate(product.getEndDate())

@@ -18,6 +18,7 @@ public class ProductDetailResposeDTO {
     private Integer amount;
     private String introduction;
     private List<String> imgs;
+    private String username;
 
 
 
