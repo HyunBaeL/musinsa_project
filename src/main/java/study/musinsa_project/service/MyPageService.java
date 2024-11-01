@@ -37,7 +37,7 @@ public class MyPageService {
 
         return MyPageUserResponse.builder()
                 .id(user.getIdx())
-                .nickName(user.getNickName())
+                .nickName(user.getUserName())
                 .build();
     }
 
