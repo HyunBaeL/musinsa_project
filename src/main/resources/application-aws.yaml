@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        access-key: asd
+        secret-key: asdsadsad
+      region:
+        static: ap-northeast-2

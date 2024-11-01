@@ -9,7 +9,20 @@ spring:
     mvc:
         pathmatch:
             matching-strategy : ant_path_matcher
+    jpa:
+        hibernate:
+            ddl-auto: none
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        show-sql: true
+        properties:
+            hibernate.format_sql: true
+    profiles:
+        active: aws
+
+
 logging:
     config: classpath:logback-spring-local.xml
     level:
         org.springframework.security: DEBUG
+
