@@ -1,10 +1,11 @@
 package study.musinsa_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import study.musinsa_project.dto.ProductDetailResposeDTO;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class Product
     @Column(name = "amount", nullable = false)
     private int amount; // 상품 재고 수량
 
-    @Column(name = "imgs", length = 255)
-    private String imgs; // 상품 이미지 URL
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> imgs; // 상품 이미지 URL
 
     @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction; // 상품 설명
@@ -45,14 +46,26 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false, columnDefinition = "ENUM('Y', 'N') DEFAULT 'Y'")
-    private State state; // 상품 상태
+    private ProductState state; // 상품 상태
 
-
-    public enum State {
-        Y, N
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false, columnDefinition = "ENUM('상의', '하의')")
+    private ProductCategory category; // 상품 상태
 
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private List<CartItems> cartItems;
+
+    public ProductDetailResposeDTO getProductDetailResposeDTO(Product product) {
+        return ProductDetailResposeDTO.builder()
+                .id(product.getId())
+                .amount(product.getAmount())
+                .price(product.getPrice())
+                .name(product.getItemName())
+                .introduction(product.getIntroduction())
+                .imgs(product.getImgs())
+                .username(product.getUser().getUserName())
+                .build();
+    }
+
 }

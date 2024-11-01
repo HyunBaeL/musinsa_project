@@ -1,9 +1,13 @@
 package study.musinsa_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
@@ -12,10 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users {
-    // 회원가입
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+public class Users
+{
+    // user Entity
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "user_idx", nullable = false)
     private Long idx;
 

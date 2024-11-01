@@ -17,4 +17,5 @@ public class ProductRegisterDto
     private String introduction;
     private LocalDateTime endDate; // 판매 종료 날짜
     private String category; // 카테고리 (상의, 하의)
+
 }

@@ -14,5 +14,4 @@ public interface ProductMapper
 
     // product 엔티티를 summaryDto 로 매핑
     ProductSummaryDto toSummaryDto(Product product);
-
 }
