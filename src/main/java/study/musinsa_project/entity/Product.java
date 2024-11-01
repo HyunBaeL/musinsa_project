@@ -52,8 +52,6 @@ public class Product
     @Column(name = "category", nullable = false, columnDefinition = "ENUM('상의', '하의')")
     private ProductCategory category; // 상품 상태
 
-
-
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
     private List<CartItems> cartItems;
