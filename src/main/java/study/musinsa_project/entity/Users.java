@@ -2,8 +2,7 @@ package study.musinsa_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
@@ -13,9 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Users {
-    // 회원가입
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // user Entity
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_idx", nullable = false)
     private Long idx;
 
