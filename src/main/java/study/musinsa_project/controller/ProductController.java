@@ -59,31 +59,4 @@ public class ProductController {
         return ResponseEntity.ok(productService.updateProductAmount(productId, userId, amount));
     }
 
-
-
-
-
-
-
-
-//
-//
-//    // 쇼핑몰 물품 상세 페이지 // state 가 'N'인 경우 제외
-//    @GetMapping("/products/{productId}")
-//    public ResponseEntity<ProductDetailDto> productDetailInfo(@PathVariable Long productId)
-//    {
-//        return ResponseEntity.ok(productService.detailProduct(productId));
-//    }
-
-
-
-//
-//    // 유저들이 등록한 모든 상품들중 이미지, 상품명, 가격을 메인 페이지에 뿌려주기 // state 가 'Y'인 상품들만
-//    @GetMapping("/products")
-//    public ResponseEntity<List<ProductSummaryDto>> productList()
-//    {
-//        return productService.showAllProduct();
-//    }
-
-
 }
