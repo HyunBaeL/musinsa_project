@@ -18,7 +18,7 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 상품 고유 ID
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx", nullable = false)
     private Users user; // 사용자 (Foreign Key)
 
@@ -45,12 +45,11 @@ public class Product
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false, columnDefinition = "ENUM('Y', 'N') DEFAULT 'Y'")
-    private State state; // 상품 상태
+    private ProductState state; // 상품 상태
 
-
-    public enum State {
-        Y, N
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false, columnDefinition = "ENUM('상의', '하의')")
+    private ProductCategory category; // 상품 상태
 
     @JsonManagedReference
     @OneToMany(mappedBy = "product")
@@ -67,4 +66,5 @@ public class Product
                 .username(product.getUser().getUserName())
                 .build();
     }
+
 }

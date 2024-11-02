@@ -15,6 +15,7 @@ import study.musinsa_project.dto.CartItemsRequestDTO;
 @Setter
 @AllArgsConstructor
 public class CartItems {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -38,9 +39,6 @@ public class CartItems {
 
     @ColumnDefault("1")
     private boolean state;
-
-
-
 
 
     public CartItems(Long id,int quantity, Long userIdx, Long productId) {

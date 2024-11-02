@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import lombok.*;
 import java.util.List;
 
 @Entity
@@ -14,9 +14,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+@Builder
+
+public class Users
+{
     // user Entity
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "user_idx", nullable = false)
     private Long idx;
 
@@ -29,13 +33,19 @@ public class Users {
     @Column(name = "user_email", nullable = false)
     private String email;
 
-    @Column(name = "user_nickName", nullable = false)
-    private String nickName;
+    @Column(name = "reference_id", nullable = true)
+    private String referenceId;
 
-    @Column(name = "user_cashes", nullable = false)
+    @Column(name = "user_cashes", nullable = true)
     private Integer cashes;
 
-    @Column(name = "user_profileImg", nullable = false)
+    @Column(name = "user_address", nullable = false)
+    private String address;
+
+    @Column(name = "user_phone", nullable = false)
+    private String phone;
+
+    @Column(name = "user_profile_img", nullable = true)
     private String profile_img;
 
     @Enumerated(EnumType.STRING)
@@ -46,7 +56,6 @@ public class Users {
     @OneToMany(mappedBy = "user")
     private List<Product> products;
 
-
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<CartItems> cartItems;
@@ -54,6 +63,4 @@ public class Users {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Orders> orders;
-
-
 }
