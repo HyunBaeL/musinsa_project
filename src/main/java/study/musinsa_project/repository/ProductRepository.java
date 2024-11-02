@@ -17,10 +17,12 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     @Query("update Product p SET p.state = :state WHERE p.id = :productId AND p.user.idx = :userId")
     int updateStateByProductIdAndUserId(@Param("state")ProductState productState, @Param("productId")Long productId, @Param("userId")Long userId);
 
-    @Query("SELECT p FROM Product p WHERE p.user.idx = :userId AND p.state = :state")
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.imgs WHERE p.user.idx = :userId AND p.state = :state")
     List<Product> findByUserIdAndState(@Param("userId")Long userId, @Param("state")ProductState state );
    
    List<Product> findAllByOrderByIdDesc();
 
 
+   @Query("SELECT p FROM Product p WHERE p.state = 'Y'")
+   List<Product> findByState();
 }

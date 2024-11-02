@@ -9,15 +9,9 @@ import study.musinsa_project.entity.*;
 import study.musinsa_project.mapper.ProductMapper;
 import study.musinsa_project.repository.ProductRepository;
 import study.musinsa_project.repository.UsersRepository;
-import study.musinsa_project.service.exception.DeletionFailedException;
-import study.musinsa_project.service.exception.ExpiredProductException;
-import study.musinsa_project.service.exception.NotFoundException;
-import study.musinsa_project.service.exception.UnauthorizedActionException;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.stereotype.Service;
+import study.musinsa_project.service.exception.*;
 import study.musinsa_project.dto.ProductDetailResposeDTO;
 import study.musinsa_project.dto.ProductListResponseDTO;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,6 +35,8 @@ public class ProductService
         if (user.isPresent())
         {
             Product product = productMapper.toEntity(productRegisterDTO); // DTO 를 엔티티로 변환
+
+
             product.setStartDate(LocalDateTime.now()); // 현재 시간 설정
             product.setState(ProductState.Y); // 기본 상태 설정
             product.setUser(user.get()); // 사용자 설정
@@ -70,7 +66,7 @@ public class ProductService
             {
                 if (product.get().getState() == ProductState.N) // state 가 유효하지 않은 상품인가?
                     // 상태가 'N'인 경우 예외 처리
-                    throw new ExpiredProductException("해당 상품은 판매예상기간이 지났습니다.");
+                    throw new ExpiredProductException("해당 상품은 판매기한 만료 및 삭제처리 되었습니다.");
 
                 int result = productRepository.updateStateByProductIdAndUserId(ProductState.N, productId, userId);
                 if (result > 0)  // 업데이트 된 행의 갯수(result)가 1개 이상이면~? 성공
@@ -97,7 +93,7 @@ public class ProductService
     }
 
 
-
+    // 본인이 등록한 상품의 수량을 조정
     public String updateProductAmount(Long productId, Long userId, int amount)
     {
         updateProductState();
@@ -107,11 +103,16 @@ public class ProductService
         if (product.isPresent() && user.isPresent())
         {
             if (product.get().getState() == ProductState.N)
-                return "해당 상품은 판매예정기한이 지났습니다.";
+                return "해당 상품은 판매기한 만료 및 삭제처리 되었습니다.";
+
+            if (!product.get().getUser().getIdx().equals(userId))
+                return "본인이 등록한 상품이 아닙니다.";
 
             // 입력한 수량이 음수인지 체크
             if (amount < 0)
                 return "음수는 입력할 수 없습니다.";
+            else if (amount == product.get().getAmount())
+                return "현재 상품재고 수량과 바꾸려는 재고 수량값이 동일합니다.";
 
             // 재고 업데이트
             product.get().setAmount(amount);
@@ -122,7 +123,7 @@ public class ProductService
             return "찾으시는 상품 또는 해당 유저 ID가 존재하지 않습니다.";
     }
 
-
+    // 본인이 등록한 상품 중 더 이상 판매하지 않는 상품을 모두 조회
     public ResponseEntity<List<ProductSummaryDto>> getExpiredUserProducts(Long userId)
     {
         updateProductState();
@@ -159,7 +160,7 @@ public class ProductService
     // end_date 가 지난 상품들의 state 를 'N' 으로 변경
     private void updateProductState()
     {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findByState(); // 성능을 위해서 State 가 'Y'인 상품만 가져오도록 구현
         LocalDateTime now = LocalDateTime.now();
 
         products.forEach(product -> {
@@ -171,6 +172,4 @@ public class ProductService
         });
     }
 
-
-    
 }
