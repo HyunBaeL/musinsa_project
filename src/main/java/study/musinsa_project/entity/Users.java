@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import study.musinsa_project.entity.UserStatus;
 
 import java.util.List;
 
@@ -51,6 +50,10 @@ public class Users {
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<CartItems> cartItems;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders;
 
 
 }
