@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.musinsa_project.dto.CartItemsRequestDTO;
-import study.musinsa_project.dto.ProductListResponseDTO;
+import study.musinsa_project.dto.*;
 import study.musinsa_project.service.CartService;
 
 import java.util.List;
@@ -41,6 +40,14 @@ public class CartController {
     public ResponseEntity<Object> deleteCartItem(@PathVariable("cartItemId") Long cartItemId) {
         cartService.deleteCartItem(cartItemId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<MessageResponseDTO> orderCartItem(@RequestBody OrderItemsRequestDTO requestDTO) {
+
+        MessageResponseDTO response = cartService.orderCartItem(requestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
