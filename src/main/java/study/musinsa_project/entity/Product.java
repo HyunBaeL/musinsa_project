@@ -19,7 +19,7 @@ public class Product
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 상품 고유 ID
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx", nullable = false)
     private Users user; // 사용자 (Foreign Key)
 
