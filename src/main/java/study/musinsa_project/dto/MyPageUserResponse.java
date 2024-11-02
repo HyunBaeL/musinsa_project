@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class MyPageUserResponse {
-    private long id;
+    private long userId;
     private String nickName;
 }
