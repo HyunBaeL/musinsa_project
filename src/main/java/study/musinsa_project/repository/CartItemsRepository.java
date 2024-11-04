@@ -11,5 +11,8 @@ public interface CartItemsRepository extends JpaRepository<CartItems, Long> {
     @Query("select c from CartItems c where c.user.idx = :userId")
     List<CartItems> selectUserId(int userId);
 
+    @Query("select c from CartItems c where c.user.idx = :userId and c.state = true")
+    List<CartItems> selectCartItems(int userId);
+
 
 }

@@ -40,3 +40,4 @@ out/
 
 application.yaml
 application.properties
+application-aws.properties
