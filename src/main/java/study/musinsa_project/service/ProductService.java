@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import study.musinsa_project.dto.product.ProductRegisterDto;
 import study.musinsa_project.dto.product.ProductSummaryDto;
 import study.musinsa_project.entity.*;
+import study.musinsa_project.exception.mypage.CommonError;
+import study.musinsa_project.exception.mypage.MyPageException;
 import study.musinsa_project.mapper.ProductMapper;
 import study.musinsa_project.repository.ProductRepository;
 import study.musinsa_project.repository.UsersRepository;
@@ -136,23 +138,31 @@ public class ProductService
     public ProductDetailResposeDTO getProductById(Long productId) {
         return productRepository.findById(productId)
                 .map(item -> item.getProductDetailResposeDTO(item))
-                .orElseThrow(() -> new RuntimeException("해당 상품 존재하지 않습니다."));
+                .orElseThrow(() -> new MyPageException(CommonError.PRODUCT_NOT_FOUND, CommonError.PRODUCT_NOT_FOUND.getMessage()));
 
     }
 
     public List<ProductListResponseDTO> getProductAll() {
 
-        return productRepository.findAllByOrderByIdDesc()
-                .stream().filter(product -> product.getAmount() > 0)
+        List<Product> products = productRepository.findAllByOrderByIdDesc();
+
+        List<ProductListResponseDTO> productListResponseDTOS =
+                products.stream().filter(product -> product.getState() == ProductState.Y && product.getAmount() > 0)
                         .map(product -> ProductListResponseDTO.builder()
-                        .id(product.getId())
-                        .price(product.getPrice())
-                        .name(product.getItemName())
-                        .mainImg(product.getImgs().get(0))
-                        .username(product.getUser().getUserName())
-                        .amount(product.getAmount())
-                        .build())
-                .collect(Collectors.toList());
+                                .productId(product.getId())
+                                .price(product.getPrice())
+                                .name(product.getItemName())
+                                .mainImg(product.getImgs().get(0))
+                                .username(product.getUser().getUserName())
+                                .amount(product.getAmount())
+                                .build())
+                        .collect(Collectors.toList());
+
+        if (productListResponseDTOS.isEmpty()){
+            throw new MyPageException(CommonError.PRODUCT_NOT_FOUND, CommonError.PRODUCT_NOT_FOUND.getMessage());
+        }
+
+        return productListResponseDTOS;
     }
 
 
