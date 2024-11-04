@@ -4,10 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.musinsa_project.dto.*;
-import study.musinsa_project.entity.CartItems;
-import study.musinsa_project.entity.OrderItem;
-import study.musinsa_project.entity.Orders;
-import study.musinsa_project.entity.Product;
+import study.musinsa_project.entity.*;
 import study.musinsa_project.repository.CartItemsRepository;
 import study.musinsa_project.repository.OrderItemRepository;
 import study.musinsa_project.repository.OrdersRepository;
@@ -70,7 +67,7 @@ public class CartService {
                     throw new Exception();
                 }else if (cartItems.getProduct().getAmount() == cartItems.getQuantity()){
                     product.setAmount(0);
-                    product.setState(Product.State.N);
+                    product.setState(ProductState.N);
                 }else{
                     product.setAmount(product.getAmount() - cartItems.getQuantity());
                 }
