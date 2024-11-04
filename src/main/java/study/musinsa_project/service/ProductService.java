@@ -14,6 +14,8 @@ import study.musinsa_project.repository.UsersRepository;
 import study.musinsa_project.service.exception.*;
 import study.musinsa_project.dto.ProductDetailResposeDTO;
 import study.musinsa_project.dto.ProductListResponseDTO;
+
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -142,9 +144,17 @@ public class ProductService
 
     }
 
-    public List<ProductListResponseDTO> getProductAll() {
+    public List<ProductListResponseDTO> getProductAll(String keyword) {
 
-        List<Product> products = productRepository.findAllByOrderByIdDesc();
+        List<Product> products = new ArrayList<>();
+
+        if (keyword == null || keyword.length() == 0){
+            products = productRepository.findAllByOrderByIdDesc();
+        }else{
+            products = productRepository.findAllByItemNameContainingOrderByIdDesc(keyword);
+        }
+
+
 
         List<ProductListResponseDTO> productListResponseDTOS =
                 products.stream().filter(product -> product.getState() == ProductState.Y && product.getAmount() > 0)

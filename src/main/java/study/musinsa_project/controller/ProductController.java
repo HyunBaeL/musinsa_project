@@ -49,8 +49,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.deleteItem(productId, userId));
     }
 
-
-
     // 유저는 자신이 팔고있는 물품의 재고 수정 가능
 
     @PutMapping("/{productId}/amount")

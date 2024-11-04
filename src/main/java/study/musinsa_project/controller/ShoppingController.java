@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import study.musinsa_project.dto.ProductDetailResposeDTO;
 import study.musinsa_project.dto.ProductListResponseDTO;
@@ -24,7 +25,13 @@ public class ShoppingController {
 
     @GetMapping("/main")
     public ResponseEntity<List<ProductListResponseDTO>> getMainProduct() {
-        List<ProductListResponseDTO> responseDTOS = productService.getProductAll();
+        List<ProductListResponseDTO> responseDTOS = productService.getProductAll(null);
+        return ResponseEntity.ok(responseDTOS);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductListResponseDTO>> searchProductByKeyword(@RequestParam String keyword) {
+        List<ProductListResponseDTO> responseDTOS = productService.getProductAll(keyword);
         return ResponseEntity.ok(responseDTOS);
     }
 
