@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class MyPageUserResponse {
-    private long userId;
-    private String nickName;
+public class MessageResponseDTO {
+    String message;
 }

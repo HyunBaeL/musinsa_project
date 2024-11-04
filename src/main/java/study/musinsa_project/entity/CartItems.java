@@ -2,11 +2,12 @@
 package study.musinsa_project.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.hibernate.annotations.ColumnDefault;
 import study.musinsa_project.dto.CartItemsRequestDTO;
 
 @Entity
@@ -35,6 +36,10 @@ public class CartItems {
 
     @Column(name= "product_id")
     private Long productId;
+
+    @ColumnDefault("1")
+    private boolean state;
+
 
     public CartItems(Long id,int quantity, Long userIdx, Long productId) {
         this.id = id;
