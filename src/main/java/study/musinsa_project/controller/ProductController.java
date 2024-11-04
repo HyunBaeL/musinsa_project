@@ -3,7 +3,8 @@ package study.musinsa_project.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.musinsa_project.dto.product.ProductRegisterDto;
+import study.musinsa_project.dto.product.ProductRegisterRequestDto;
+import study.musinsa_project.dto.product.ProductRegisterResponseDto;
 import study.musinsa_project.dto.product.ProductSummaryDto;
 import study.musinsa_project.service.ProductService;
 
@@ -20,10 +21,9 @@ public class ProductController {
 
     // 상품등록
     @PostMapping("/register")
-    public ResponseEntity<String> registerProduct(@RequestBody ProductRegisterDto productRegisterDTO)
+    public ResponseEntity<ProductRegisterResponseDto> registerProduct(@RequestBody ProductRegisterRequestDto productRegisterRequestDTO)
     {
-        Long id =  productService.registerProduct(productRegisterDTO);
-        return ResponseEntity.ok( "[" + id + "] " + "상품 등록 성공");
+        return productService.registerProduct(productRegisterRequestDTO);
     }
 
 
@@ -40,7 +40,6 @@ public class ProductController {
     {
         return productService.getExpiredUserProducts(userId);
     }
-
 
     // 상품삭제 : state 필드만 'Y' 에서 'N' 으로 바꿔야하기 때문에 PUT 사용  // 본인 상품만 삭제가능
     @PutMapping("/{productId}/delete")
