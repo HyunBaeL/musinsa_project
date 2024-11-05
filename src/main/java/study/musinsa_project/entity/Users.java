@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.*;
+import study.musinsa_project.dto.MyPageUserDetailResponse;
+import study.musinsa_project.dto.MyPageUserResponse;
+import study.musinsa_project.dto.MyPageUserUpdateRequest;
+
 import java.util.List;
 
 @Entity
@@ -63,4 +67,43 @@ public class Users
     @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Orders> orders;
+
+    /** Users 엔티티 -> MyPageUserResponseToDto DTO 변환
+     * @return = MyPageUserResponseToDto DTO
+     */
+    public MyPageUserResponse MyPageUserResponseToDto(){
+        return MyPageUserResponse.builder()
+                .userId(this.idx)
+                .nickName(this.userName)
+                .build();
+    }
+
+    /** Users 엔티티 -> MyPageUserDetailResponse DTO 변환
+     * @return = MyPageUserDetailResponse DTO
+     */
+    public MyPageUserDetailResponse MyPageUserDetailResponseToDto() {
+        return MyPageUserDetailResponse.builder()
+                .userId(this.idx)
+                .userName(this.userName)
+                .email(this.email)
+                .referenceId(this.referenceId)
+                .caches(this.cashes)
+                .address(this.address)
+                .phone(this.phone)
+                .profile_img(this.profile_img)
+                .build();
+    }
+
+    /** 마이페이지 유저 정보 수정
+     * @param myPageUserUpdateRequest = 수정된 회원 정보
+     */
+    public void userUpdate(MyPageUserUpdateRequest myPageUserUpdateRequest){
+        userName = myPageUserUpdateRequest.getUserName();
+        email = myPageUserUpdateRequest.getEmail();
+        referenceId = myPageUserUpdateRequest.getReferenceId();
+        cashes = myPageUserUpdateRequest.getCaches();
+        address = myPageUserUpdateRequest.getAddress();
+        phone = myPageUserUpdateRequest.getPhone();
+    }
+
 }

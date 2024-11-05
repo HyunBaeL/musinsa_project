@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @AllArgsConstructor
-public class MyPageUserUpdateRequest {
+public class MyPageOrdersResponse {
 
     private String userName;
-    private String email;
-    private String referenceId;
-    private Integer caches;
-    private String address;
-    private String phone;
-
+    private String itemName;
+    private int quantity;
+    private LocalDateTime createdDate;
 }
