@@ -35,6 +35,7 @@ public class Orders extends BaseTime{
 
     private boolean state;
 
+    private int totalPrice;
 
     public Orders() {
 

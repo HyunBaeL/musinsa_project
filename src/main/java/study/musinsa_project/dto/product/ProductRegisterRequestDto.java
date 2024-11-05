@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 // 상품 등록할때 사용할 Dto
-public class ProductRegisterDto
+public class ProductRegisterRequestDto
 {
     private Long userIdx;
     private List<String> imgs;

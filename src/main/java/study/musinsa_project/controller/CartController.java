@@ -25,27 +25,35 @@ public class CartController {
     }
 
     @PostMapping("/item")
-    public ResponseEntity<CartItemsRequestDTO> createCartItem(@RequestBody CartItemsRequestDTO cartItemsRequestDTO) {
-        CartItemsRequestDTO requestDTO = cartService.createCartItem(cartItemsRequestDTO);
+    public ResponseEntity<CartItemsResponse> createCartItem(@RequestBody CartItemsRequestDTO cartItemsRequestDTO) {
+        CartItemsResponse requestDTO = cartService.createCartItem(cartItemsRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(requestDTO);
     }
 
     @PutMapping("/item/{cartItemId}")
-    public ResponseEntity<CartItemsRequestDTO> updateCartItem(@RequestBody CartItemsRequestDTO cartItemsRequestDTO, @PathVariable("cartItemId") Long cartItemId) {
-        CartItemsRequestDTO requestDTO = cartService.updateCartItem(cartItemsRequestDTO, cartItemId);
-        return ResponseEntity.status(HttpStatus.OK).body(requestDTO);
+    public ResponseEntity<CartItemsResponse> updateCartItem(@RequestBody CartItemsRequestDTO cartItemsRequestDTO, @PathVariable("cartItemId") Long cartItemId) {
+        CartItemsResponse response = cartService.updateCartItem(cartItemsRequestDTO, cartItemId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/item/{cartItemId}")
-    public ResponseEntity<Object> deleteCartItem(@PathVariable("cartItemId") Long cartItemId) {
-        cartService.deleteCartItem(cartItemId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    public ResponseEntity<CartItemsResponse> deleteCartItem(@PathVariable("cartItemId") Long cartItemId) {
+        CartItemsResponse response = cartService.deleteCartItem(cartItemId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<OrderListResponse> getOrder(@RequestBody OrderItemsRequestDTO requestDTO) {
+
+        OrderListResponse response = cartService.getOrder(requestDTO);
+
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/order")
-    public ResponseEntity<MessageResponseDTO> orderCartItem(@RequestBody OrderItemsRequestDTO requestDTO) {
+    public ResponseEntity<OrderItemsResponse> orderCartItem(@RequestBody OrderItemsRequestDTO requestDTO) {
 
-        MessageResponseDTO response = cartService.orderCartItem(requestDTO);
+        OrderItemsResponse response = cartService.orderCartItem(requestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
