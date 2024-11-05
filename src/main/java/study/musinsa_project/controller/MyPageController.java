@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import study.musinsa_project.dto.*;
 import study.musinsa_project.service.MyPageService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class MyPageController {
         return ResponseEntity.ok().body(myPageService.selectMyPage(userId));
     }
 
-    @Operation(summary = "해당 유저 마이페이지 상세 API", description = "해당 유저 userId(primary key)값을 넘겨 주세요.")
+    @Operation(summary = "해당 유저 마이페이지 상세 조회 API", description = "해당 유저 userId(primary key)값을 넘겨 주세요.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "해당 유저 정보를 출력 합니다.",
                     content = @Content(mediaType = "application/json",
@@ -72,24 +74,7 @@ public class MyPageController {
     @PostMapping("/myPageUserUpdate/{userId}")
     public ResponseEntity<MyPageUserDetailResponse> myPageUserUpdate(
             @PathVariable int userId, @RequestBody MyPageUserUpdateRequest myPageUserUpdateRequest){
-        return myPageService.myPageUserUpdate(userId,myPageUserUpdateRequest);
-    }
-
-    @Operation(summary = "마이페이지 장바구니 조회 API", description = "해당 유저 userId(primary key)값을 넘겨 주세요.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "해당 유저 장바구니 정보를 출력 합니다.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = MyPageCartResponse.class))),
-            @ApiResponse(responseCode = "400", description = "해당 유저가 정보가 존재하지 않습니다.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
-            @ApiResponse(responseCode = "500", description = "서버 오류로 장바구니 내역 조회에 실패 했습니다.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
-    })
-    @GetMapping("/myPageCart/{userId}")
-    public ResponseEntity<MyPageCartResponse> myPageCart(@PathVariable int userId){
-        return ResponseEntity.ok().body(myPageService.selectMyPageCart(userId));
+        return ResponseEntity.ok(myPageService.myPageUserUpdate(userId,myPageUserUpdateRequest));
     }
 
     @Operation(summary = "마이페이지 이미지 수정 API", description = "유저 primary key 값과 이미지 를 form-data 로 넘겨 주세요.")
@@ -108,4 +93,39 @@ public class MyPageController {
     public ResponseEntity<?> myPageImageUpload(@RequestPart(value = "image", required = false) MultipartFile image, @PathVariable int userId){
         return ResponseEntity.ok(myPageService.upload(image,userId));
     }
+
+    @Operation(summary = "마이페이지 주문내역 조회 API", description = "해당 유저 userId(primary key)값을 넘겨 주세요.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "해당 유저 주문내역 조회에 성공했습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MyPageUserDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "해당 유저가 정보가 존재하지 않습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러로 주문내역 조회에 실패 했습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
+    })
+    @GetMapping("/myPageOrders/{userId}")
+    public ResponseEntity<List<MyPageOrdersResponse>> myPageOrders(@PathVariable Long userId){
+        return ResponseEntity.ok(myPageService.selectMyPageOrders(userId));
+    }
+
+    @Operation(summary = "마이페이지 장바구니 조회 API", description = "해당 유저 userId(primary key)값을 넘겨 주세요.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "해당 유저 장바구니 정보를 출력 합니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MyPageCartResponse.class))),
+            @ApiResponse(responseCode = "400", description = "해당 유저가 정보가 존재하지 않습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러로 장바구니 내역 조회에 실패 했습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMyPageResponse.class))),
+    })
+    @GetMapping("/myPageCart/{userId}")
+    public ResponseEntity<MyPageCartResponse> myPageCart(@PathVariable int userId){
+        return ResponseEntity.ok().body(myPageService.selectMyPageCart(userId));
+    }
+
 }

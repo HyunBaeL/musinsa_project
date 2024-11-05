@@ -1,7 +1,6 @@
 package study.musinsa_project.service;
 
 import jakarta.persistence.EntityManager;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -18,6 +17,8 @@ import study.musinsa_project.exception.mypage.CommonError;
 import study.musinsa_project.exception.mypage.MyPageException;
 import study.musinsa_project.repository.CartItemsRepository;
 import study.musinsa_project.repository.MyPageRepository;
+import study.musinsa_project.repository.OrdersRepository;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -29,61 +30,62 @@ public class MyPageService {
 
     private final MyPageRepository myPageRepository;
     private final CartItemsRepository cartItemsRepository;
+    private final OrdersRepository ordersRepository;
     private final S3Client s3Client;
     private final String s3BucketName;
-    private final EntityManager em;
 
+    /** 마이페이지 조회 메소드
+     * @param userId = 사용자 PK
+     * @return = MyPageUserResponse DTO
+     */
     public MyPageUserResponse selectMyPage(int userId) {
         Users user = myPageRepository.findById(userId).orElseThrow(() ->
                 new MyPageException(CommonError.USER_NOT_FOUND,CommonError.USER_NOT_FOUND.getMessage()));
 
-        return MyPageUserResponse.builder()
-                .userId(user.getIdx())
-                .nickName(user.getUserName())
-                .build();
+        return user.MyPageUserResponseToDto();
     }
 
+    /** 마이페이지 상세 페이지 조회 메소드
+     * @param userId = 사용자 PK
+     * @return = MyPageUserDetailResponse DTO
+     */
     public MyPageUserDetailResponse myPageUserDetail(int userId) {
         Users user = myPageRepository.findById(userId).orElseThrow(()
                 -> new MyPageException(CommonError.USER_NOT_FOUND,CommonError.USER_NOT_FOUND.getMessage()));
 
-        return MyPageUserDetailResponse.builder()
-                .userId(user.getIdx())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .referenceId(user.getReferenceId())
-                .caches(user.getCashes())
-                .address(user.getAddress())
-                .phone(user.getPhone())
-                .profile_img(user.getProfile_img())
-                .build();
+        return user.MyPageUserDetailResponseToDto();
     }
 
+    /** 마이페이지 개인정보 수정 메소드
+     * @param userId = 사용자 PK
+     * @param myPageUserUpdateRequest = 수정된 사용자 정보 Request DTO
+     * @return = MyPageUserDetailResponse 수정된 사용자 정보 DTO
+     */
     @Transactional
-    public ResponseEntity<MyPageUserDetailResponse> myPageUserUpdate(int userId, MyPageUserUpdateRequest myPageUserUpdateRequest) {
+    public MyPageUserDetailResponse myPageUserUpdate(int userId, MyPageUserUpdateRequest myPageUserUpdateRequest) {
         Users user = (myPageRepository.findById(userId).orElseThrow(
                 () -> new MyPageException(CommonError.USER_NOT_FOUND, CommonError.USER_NOT_FOUND.getMessage())
         ));
 
-            user.setUserName(myPageUserUpdateRequest.getUserName());
-            user.setEmail(myPageUserUpdateRequest.getEmail());
-            user.setReferenceId(myPageUserUpdateRequest.getReferenceId());
-            user.setCashes(myPageUserUpdateRequest.getCaches());
-            user.setAddress(myPageUserUpdateRequest.getAddress());
-            user.setPhone(myPageUserUpdateRequest.getPhone());
+        user.userUpdate(myPageUserUpdateRequest);
 
-        return ResponseEntity.ok(MyPageUserDetailResponse.builder()
-                .userId(user.getIdx())
-                .userName(user.getUserName())
-                .email(user.getEmail())
-                .referenceId(user.getReferenceId())
-                .caches(user.getCashes())
-                .address(user.getAddress())
-                .phone(user.getPhone())
-                .profile_img(user.getProfile_img())
-                .build());
+        return user.MyPageUserDetailResponseToDto();
     }
 
+    /** 마이페이지 주문내역 조회 메소드
+     * @param userId = 사용자 PK
+     * @return = MyPageOrdersResponse 주문내역 DTO
+     */
+    public List<MyPageOrdersResponse> selectMyPageOrders(Long userId) {
+        return Optional.ofNullable(ordersRepository.selectMyPageOrders(userId))
+                .filter(orders -> !orders.isEmpty())
+                .orElseThrow(() -> new MyPageException(CommonError.ORDERS_NOT_FOUND, CommonError.ORDERS_NOT_FOUND.getMessage()));
+    }
+
+    /** 마이페이지 장바구니 조회 메소드
+     * @param userId = 사용자 PK
+     * @return = MyPageCartResponse 장바구니 DTO
+     */
     public MyPageCartResponse selectMyPageCart(int userId) {
         List<CartItems> cartItems = cartItemsRepository.selectUserId(userId);
 
@@ -115,6 +117,11 @@ public class MyPageService {
                 .build();
     }
 
+    /** 받아온 form-data 빈파일인지 검증용 메소드
+     * @param image = form-data
+     * @param userId = 사용자 PK
+     * @return = this.uploadImage 메소드 호출
+     */
     @Transactional
     public String upload(MultipartFile image, int userId) {
         // 입력받은 이미지 파일이 빈 파일인지 검증
@@ -134,6 +141,9 @@ public class MyPageService {
         }
     }
 
+    /** form-data 확장자 체크 메소드
+     * @param filename = form-data
+     */
     @Transactional
     public void validateImageFileExtension(String filename) {
         int lastDotIndex = filename.lastIndexOf(".");
@@ -149,6 +159,11 @@ public class MyPageService {
         }
     }
 
+    /** S3 버킷에 이미지 저장 메소드
+     * @param image = form-data
+     * @param userId = 사용자 PK
+     * @return = S3 버킷에 저장된 URL
+     */
     @Transactional
     public String uploadImageToS3(MultipartFile image, int userId) throws IOException {
         String originalFilename = image.getOriginalFilename(); // 원본 파일 명
