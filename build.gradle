@@ -15,7 +15,7 @@ java {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.matching("Oracle") // Oracle JDK 사용 시
+        //vendor = JvmVendorSpec.matching("Oracle") // Oracle JDK 사용 시
     }
 }
 
