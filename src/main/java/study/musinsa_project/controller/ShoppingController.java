@@ -1,6 +1,9 @@
 package study.musinsa_project.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,14 +27,20 @@ public class ShoppingController {
     }
 
     @GetMapping("/main")
-    public ResponseEntity<List<ProductListResponseDTO>> getMainProduct() {
-        List<ProductListResponseDTO> responseDTOS = productService.getProductAll(null);
+    public ResponseEntity<Page<ProductListResponseDTO>> getMainProduct(
+            @RequestParam(value = "page", defaultValue = "0") int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<ProductListResponseDTO> responseDTOS = productService.getProductAll(null, pageable);
         return ResponseEntity.ok(responseDTOS);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductListResponseDTO>> searchProductByKeyword(@RequestParam String keyword) {
-        List<ProductListResponseDTO> responseDTOS = productService.getProductAll(keyword);
+    public ResponseEntity<Page<ProductListResponseDTO>> searchProductByKeyword(@RequestParam String keyword,
+                                                                               @RequestParam(value = "page", defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+
+        Page<ProductListResponseDTO> responseDTOS = productService.getProductAll(keyword, pageable);
         return ResponseEntity.ok(responseDTOS);
     }
 

@@ -1,5 +1,7 @@
 package study.musinsa_project.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,12 +21,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>
 
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.imgs WHERE p.user.idx = :userId AND p.state = :state")
     List<Product> findByUserIdAndState(@Param("userId")Long userId, @Param("state")ProductState state );
-   
-   List<Product> findAllByOrderByIdDesc();
 
 
    @Query("SELECT p FROM Product p WHERE p.state = 'Y'")
    List<Product> findByState();
 
-   List<Product> findAllByItemNameContainingOrderByIdDesc(String itemName);
+
+    Page<Product> findAllByOrderByIdDesc(Pageable pageable);
+    Page<Product> findAllByItemNameContainingOrderByIdDesc(String keyword, Pageable pageable);
+
 }

@@ -1,5 +1,7 @@
 package study.musinsa_project.service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -165,31 +167,27 @@ public class ProductService
 
     }
 
-    public List<ProductListResponseDTO> getProductAll(String keyword) {
 
-        List<Product> products = new ArrayList<>();
+    public Page<ProductListResponseDTO> getProductAll(String keyword, Pageable pageable) {
+        Page<Product> products;
 
-        if (keyword == null || keyword.length() == 0){
-            products = productRepository.findAllByOrderByIdDesc();
-        }else{
-            products = productRepository.findAllByItemNameContainingOrderByIdDesc(keyword);
+        if (keyword == null || keyword.isEmpty()) {
+            products = productRepository.findAllByOrderByIdDesc(pageable);
+        } else {
+            products = productRepository.findAllByItemNameContainingOrderByIdDesc(keyword, pageable);
         }
 
+        Page<ProductListResponseDTO> productListResponseDTOS = products
+                .map(product -> ProductListResponseDTO.builder()
+                        .productId(product.getId())
+                        .price(product.getPrice())
+                        .name(product.getItemName())
+                        .mainImg(product.getImgs().get(0))
+                        .username(product.getUser().getUserName())
+                        .amount(product.getAmount())
+                        .build());
 
-
-        List<ProductListResponseDTO> productListResponseDTOS =
-                products.stream().filter(product -> product.getState() == ProductState.Y && product.getAmount() > 0)
-                        .map(product -> ProductListResponseDTO.builder()
-                                .productId(product.getId())
-                                .price(product.getPrice())
-                                .name(product.getItemName())
-                                .mainImg(product.getImgs().get(0))
-                                .username(product.getUser().getUserName())
-                                .amount(product.getAmount())
-                                .build())
-                        .collect(Collectors.toList());
-
-        if (productListResponseDTOS.isEmpty()){
+        if (productListResponseDTOS.isEmpty()) {
             throw new MyPageException(CommonError.PRODUCT_NOT_FOUND, CommonError.PRODUCT_NOT_FOUND.getMessage());
         }
 
