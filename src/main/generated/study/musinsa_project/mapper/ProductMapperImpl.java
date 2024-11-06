@@ -22,11 +22,11 @@ public class ProductMapperImpl implements ProductMapper {
 
         Product product = new Product();
 
-        product.setItemName( productRegisterDto.getItemName() );
-        product.setPrice( productRegisterDto.getPrice() );
-        product.setAmount( productRegisterDto.getAmount() );
-        product.setIntroduction( productRegisterDto.getIntroduction() );
-        product.setEndDate( productRegisterDto.getEndDate() );
+        product.setItemName( productRegisterDto.getItemName());
+        product.setPrice( productRegisterDto.getPrice());
+        product.setAmount( productRegisterDto.getAmount());
+        product.setIntroduction( productRegisterDto.getIntroduction());
+        product.setEndDate( productRegisterDto.getEndDate());
 
         return product;
     }

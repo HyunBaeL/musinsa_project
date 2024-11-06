@@ -3,6 +3,7 @@ package study.musinsa_project.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import study.musinsa_project.dto.product.ProductRegisterRequestDto;
 import study.musinsa_project.dto.product.ProductRegisterResponseDto;
 import study.musinsa_project.dto.product.ProductSummaryDto;
@@ -19,13 +20,12 @@ public class ProductController {
     private ProductService productService;
 
 
-    // 상품등록
     @PostMapping("/register")
-    public ResponseEntity<ProductRegisterResponseDto> registerProduct(@RequestBody ProductRegisterRequestDto productRegisterRequestDTO)
+    public ResponseEntity<ProductRegisterResponseDto> registerProduct(@ModelAttribute ProductRegisterRequestDto productRegisterRequestDTO)
     {
+        // 이미지 목록을 DTO에 세팅 (기본적으로 @ModelAttribute가 이미 필드에 매핑)
         return productService.registerProduct(productRegisterRequestDTO);
     }
-
 
     // 유저가 등록한 상품 중 state 가 Y 인 상품만 조회
     @GetMapping("/user/{userId}/active")

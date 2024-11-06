@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class ProductRegisterResponseDto
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String category;
+    private List<String> imgs;
     private String message; // 등록완료 메시지
 
 }
