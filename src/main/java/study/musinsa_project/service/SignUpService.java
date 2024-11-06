@@ -27,7 +27,7 @@ public class SignUpService {
         String profile_img = (signUpRequest.getProfile_img() != null) ? signUpRequest.getProfile_img() : "default_profile.png";
 
         // 동일한 username이 있다면 회원가입 못하게
-        if(usersRepository.existsByUserName(userName)){
+        if(usersRepository.existsByUserNameAndStatus(userName, UserStatus.Y)){
             return "동일한 username이 있습니다.";
         }
 
