@@ -14,7 +14,6 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     public String login(@RequestBody Login loginRequest) {
-        String message = loginService.login(loginRequest);
-        return "로그인 성공! 토큰:" + message;
+        return loginService.login(loginRequest);
     }
 }
