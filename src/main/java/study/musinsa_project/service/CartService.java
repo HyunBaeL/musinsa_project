@@ -109,7 +109,6 @@ public class CartService {
 
             Orders order = ordersRepository.save(Orders.builder().userIdx(requestDTO.getUserIdx()).state(true).build());
 
-        System.out.println(order);
             int totalPrice = 0;
 
             for(Long cartItemid :requestDTO.getOrderItems()){
