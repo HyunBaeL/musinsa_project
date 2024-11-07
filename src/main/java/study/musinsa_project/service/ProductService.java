@@ -49,7 +49,7 @@ public class ProductService
 
         if (user.isPresent()) {
             Product product = productMapper.toEntity(productRegisterRequestDTO); // DTO 를 엔티티로 변환
-            product.setStartDate(LocalDateTime.now()); // 현재 시간 설정
+            product.setStartDate(LocalDateTime.now().plusHours(9)); // 현재 시간 설정
             product.setState(ProductState.Y); // 기본 상태 설정
             product.setUser(user.get()); // 사용자 설정
 
@@ -169,6 +169,8 @@ public class ProductService
 
 
     public Page<ProductListResponseDTO> getProductAll(String keyword, Pageable pageable) {
+
+
         Page<Product> products;
 
         if (keyword == null || keyword.isEmpty()) {

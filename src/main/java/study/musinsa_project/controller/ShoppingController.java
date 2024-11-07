@@ -28,7 +28,9 @@ public class ShoppingController {
 
     @GetMapping("/main")
     public ResponseEntity<Page<ProductListResponseDTO>> getMainProduct(
-            @RequestParam(value = "page", defaultValue = "0") int page) {
+            @RequestParam(value = "page", defaultValue = "0") int page
+            //@RequestParam(value="sortBy", defaultValue = "id") String sortBy
+    ) {
 
         Pageable pageable = PageRequest.of(page, 10);
         Page<ProductListResponseDTO> responseDTOS = productService.getProductAll(null, pageable);
@@ -37,7 +39,9 @@ public class ShoppingController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<ProductListResponseDTO>> searchProductByKeyword(@RequestParam String keyword,
-                                                                               @RequestParam(value = "page", defaultValue = "0") int page) {
+                                                                               @RequestParam(value = "page", defaultValue = "0") int page
+                                                                               //@RequestParam(value = "sortBy", defaultValue = "id") String sortBy
+    ) {
         Pageable pageable = PageRequest.of(page, 10);
 
         Page<ProductListResponseDTO> responseDTOS = productService.getProductAll(keyword, pageable);
