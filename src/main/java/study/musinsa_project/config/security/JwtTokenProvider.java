@@ -16,26 +16,26 @@ public class JwtTokenProvider {
     private final SecretKey secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode("c3VwZXItY29kaW5nLWZvb2JhcjEyMzQ1Njc4OWFhYjM="));
     private final long onehour = 1000L*60*60; // 1시간
 
-    public String createToken(String username){
+    public String createToken(Long idx){
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + onehour);
 
         return Jwts.builder()
                 .claims()
-                .subject(username)
+                .subject(String.valueOf(idx))
                 .expiration(expiryDate)
                 .and()
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String getSubFromToken(String token) {
+    public Long getSubFromToken(String token) {
         // JWT 파서 생성
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token.replace("Bearer ",""))
                 .getPayload();
-        return claims.getSubject();
+        return Long.parseLong(claims.getSubject());
     }
 }
