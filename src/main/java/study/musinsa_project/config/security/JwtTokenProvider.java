@@ -21,10 +21,8 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + onehour);
 
         return Jwts.builder()
-                .claims()
                 .subject(String.valueOf(idx))
                 .expiration(expiryDate)
-                .and()
                 .signWith(secretKey)
                 .compact();
     }

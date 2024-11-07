@@ -18,8 +18,6 @@ public class SignUpController {
 
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody SignUp signUpRequest){
-        String message = signUpService.signUp(signUpRequest);
-        return message;
+        return signUpService.signUp(signUpRequest);
     }
-
 }
