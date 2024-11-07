@@ -18,9 +18,9 @@ public class WithdrawController {
     @PostMapping("/withdraw")
     public String withdraw(@RequestBody Withdraw withdraw) {
         String token = withdraw.getToken();
-        // Token에서 username 추출
-        String username = jwtTokenProvider.getSubFromToken(token);
-        withdrawService.withdrawUser(username);
-        return username + " 회원 탈퇴하였습니다.";
+        // Token에서 userIdx 추출
+        Long userIdx = jwtTokenProvider.getSubFromToken(token);
+        withdrawService.withdrawUser(userIdx);
+        return " 회원 탈퇴하였습니다.";
     }
 }

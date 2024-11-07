@@ -11,8 +11,8 @@ import study.musinsa_project.repository.UsersRepository;
 public class WithdrawService {
     private final UsersRepository usersRepository;
 
-    public void withdrawUser(String username) {
-        Users users = usersRepository.findByUserName(username)
+    public void withdrawUser(Long userIdx) {
+        Users users = usersRepository.findById(userIdx)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         users.setStatus(UserStatus.N);

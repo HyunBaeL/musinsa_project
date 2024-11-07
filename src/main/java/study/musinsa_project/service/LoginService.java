@@ -32,6 +32,6 @@ public class LoginService {
         }
 
         // JWT 생성
-        return jwtTokenProvider.createToken(user.getUserName());
+        return jwtTokenProvider.createToken(user.getIdx());
     }
 }
