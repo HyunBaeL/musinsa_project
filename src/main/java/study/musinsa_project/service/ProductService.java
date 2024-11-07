@@ -115,6 +115,38 @@ public class ProductService
     }
 
 
+    @Transactional // 작업들이 모두 성공해야 최종적으로 데이터가 변경되도록 보장.
+    public String deleteItem(Long productId, Long userId) // 상품 삭제
+    {
+        Optional<Product> product = productRepository.findById(productId);
+        Optional<Users> user = usersRepository.findById(userId);
+
+        if (product.isPresent()) // 상품이 존재하는가?
+        {
+            if (user.isEmpty())
+                throw new NotFoundException("해당 유저 ID가 존재하지 않습니다.");
+
+
+            // 해당 상품의 등록자(user)의 ID와 주어진 userId가 동일한가?
+            if (product.get().getUser().getIdx().equals(userId))
+            {
+                if (product.get().getState() == ProductState.N) // state 가 유효하지 않은 상품인가?
+                    // 상태가 'N'인 경우 예외 처리
+                    throw new ExpiredProductException("해당 상품은 구매불가 상태입니다.");
+
+                int result = productRepository.updateStateByProductIdAndUserId(productId, userId);
+                if (result > 0)  // 업데이트 된 행의 갯수(result)가 1개 이상이면?
+                    return "상품이 정상적으로 삭제되었습니다.";
+
+                throw new DeletionFailedException("상품 삭제에 실패했습니다.");
+            }
+            throw new UnauthorizedActionException("본인이 등록한 상품이 아닙니다.");
+        }
+        throw new NotFoundException("해당 상품이 존재하지 않습니다.");
+    }
+
+
+
 
 
     // 유저가 등록한 상품 중 state 가 Y 인 상품만 조회

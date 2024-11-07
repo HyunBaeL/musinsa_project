@@ -26,8 +26,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>
    @Query("UPDATE Product p SET p.state = 'N' WHERE p.state = 'Y' AND p.endDate < :now")
    void updateExpiredProducts(LocalDateTime now);
 
+    @Modifying
+    @Query("UPDATE Product p SET p.state = 'N' WHERE p.id = :productId AND p.user.idx = :userId")
+    int updateStateByProductIdAndUserId(@Param("productId")Long productId, @Param("userId")Long userId);
 
     Page<Product> findAllByOrderByIdDesc(Pageable pageable);
     Page<Product> findAllByItemNameContainingOrderByIdDesc(String keyword, Pageable pageable);
+
+
 
 }
