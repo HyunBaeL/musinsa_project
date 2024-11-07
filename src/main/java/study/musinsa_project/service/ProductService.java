@@ -2,12 +2,13 @@ package study.musinsa_project.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import study.musinsa_project.dto.product.ProductRegisterRequestDto;
 import study.musinsa_project.dto.product.ProductRegisterResponseDto;
@@ -33,6 +34,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
 public class ProductService
 {
     private final ProductRepository productRepository;
@@ -42,9 +44,14 @@ public class ProductService
     private final String s3BucketName;
 
 
-    // 제품등록
-    public ResponseEntity<ProductRegisterResponseDto> registerProduct(ProductRegisterRequestDto productRegisterRequestDTO) {
-        updateProductState(); // state 업데이트 호출
+    @Scheduled(cron = "1 0 0 * * *", zone = "Asia/Seoul") // 매 00시00분01초에 실행
+    @Transactional
+    public void updateProductStateScheduler() {
+        updateProductState(); // 만료된 상품 상태 업데이트
+    }
+
+        // 제품등록
+    public ProductRegisterResponseDto registerProduct(ProductRegisterRequestDto productRegisterRequestDTO) {
         Optional<Users> user = usersRepository.findById(productRegisterRequestDTO.getUserIdx());
 
         if (user.isPresent()) {
@@ -63,7 +70,7 @@ public class ProductService
             ProductRegisterResponseDto responseDto = productMapper.toResponseDto(product);
             responseDto.setMessage("성공적으로 상품이 등록됐습니다.");
             responseDto.setImgs(imageUrls);
-            return ResponseEntity.ok(responseDto);
+            return responseDto;
         } else {
             throw new NotFoundException("해당 유저가 존재하지 않습니다.");
         }
@@ -111,19 +118,16 @@ public class ProductService
 
 
     // 유저가 등록한 상품 중 state 가 Y 인 상품만 조회
-    public ResponseEntity<List<ProductSummaryDto>> getUserProducts(Long userId)
+    public List<ProductSummaryDto> getUserProducts(Long userId)
     {
-        updateProductState(); // state 업데이트 호출
         List<Product> products = productRepository.findByUserIdAndState(userId, ProductState.Y);
-        List<ProductSummaryDto> summaryDtos = products.stream().map(productMapper::toSummaryDto).collect(Collectors.toList());
-        return ResponseEntity.ok(summaryDtos);
+        return products.stream().map(productMapper::toSummaryDto).collect(Collectors.toList());
     }
 
 
     // 본인이 등록한 상품의 수량을 조정
     public String updateProductAmount(Long productId, Long userId, int amount)
     {
-        updateProductState();
         Optional<Product> product = productRepository.findById(productId);
         Optional<Users> user = usersRepository.findById(userId);
 
@@ -151,12 +155,10 @@ public class ProductService
     }
 
     // 본인이 등록한 상품 중 더 이상 판매하지 않는 상품을 모두 조회
-    public ResponseEntity<List<ProductSummaryDto>> getExpiredUserProducts(Long userId)
+    public List<ProductSummaryDto> getExpiredUserProducts(Long userId)
     {
-        updateProductState();
         List<Product> products = productRepository.findByUserIdAndState(userId, ProductState.N);
-        List<ProductSummaryDto> summaryDtos = products.stream().map(productMapper::toSummaryDto).collect(Collectors.toList());
-        return ResponseEntity.ok(summaryDtos);
+        return products.stream().map(productMapper::toSummaryDto).collect(Collectors.toList());
 
     }
 
@@ -199,18 +201,10 @@ public class ProductService
 
 
     // end_date 가 지난 상품들의 state 를 'N' 으로 변경
-    private void updateProductState()
+    @Transactional
+    public void updateProductState()
     {
-        List<Product> products = productRepository.findByState(); // 성능을 위해서 State 가 'Y'인 상품만 가져오도록 구현
-        LocalDateTime now = LocalDateTime.now();
-
-        products.forEach(product -> {
-            if (product.getEndDate() != null && product.getEndDate().isBefore(now))
-            {
-                product.setState(ProductState.N); // 상태를 'N' 으로 변경
-                productRepository.save(product); // 변경 사항 저장
-            }
-        });
+        productRepository.updateExpiredProducts(LocalDateTime.now()); // 판매예정시간이 지난 상품은 N으로 변경 스케쥴러 이용
     }
 
 }
