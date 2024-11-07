@@ -26,6 +26,11 @@ public class SignUpService {
         Integer cashes = (signUpRequest.getCashes() != null) ? signUpRequest.getCashes() : 0;
         String profile_img = (signUpRequest.getProfile_img() != null) ? signUpRequest.getProfile_img() : "default_profile.png";
 
+        // 탈퇴한 회원 username기준으로 다시 회원가입 못하게
+        if(usersRepository.existsByUserNameAndStatus(userName,UserStatus.N)){
+            return "탈퇴한 회원이므로 회원가입 안됩니다.";
+        }
+
         // 동일한 username이 있다면 회원가입 못하게
         if(usersRepository.existsByUserNameAndStatus(userName, UserStatus.Y)){
             return "동일한 username이 있습니다.";
