@@ -213,6 +213,10 @@ public class ProductService
             products = productRepository.findAllByItemNameContainingOrderByIdDesc(keyword, pageable);
         }
 
+        if (products.isEmpty()) {
+            throw new MyPageException(CommonError.PRODUCT_NOT_FOUND, CommonError.PRODUCT_NOT_FOUND.getMessage());
+        }
+
         Page<ProductListResponseDTO> productListResponseDTOS = products
                 .map(product -> ProductListResponseDTO.builder()
                         .productId(product.getId())
@@ -223,9 +227,7 @@ public class ProductService
                         .amount(product.getAmount())
                         .build());
 
-        if (productListResponseDTOS.isEmpty()) {
-            throw new MyPageException(CommonError.PRODUCT_NOT_FOUND, CommonError.PRODUCT_NOT_FOUND.getMessage());
-        }
+
 
         return productListResponseDTOS;
     }
