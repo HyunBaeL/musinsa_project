@@ -190,12 +190,10 @@ public class MyPageService {
         }
         String newImage = s3Client.utilities().getUrl(b -> b.bucket(s3BucketName).key(s3FileName)).toExternalForm();
 
-        Optional<Users> users = Optional.ofNullable(myPageRepository.findById(userId).orElseThrow(
-                () -> new MyPageException(CommonError.USER_NOT_FOUND, CommonError.USER_NOT_FOUND.getMessage())));
+        Users users = myPageRepository.findById(userId)
+                .orElseThrow(() -> new MyPageException(CommonError.USER_NOT_FOUND, CommonError.USER_NOT_FOUND.getMessage()));
 
-        users.ifPresent(user -> {
-            user.setProfile_img(newImage);
-        });
+        users.setProfile_img(newImage);
 
         return newImage;
     }
