@@ -48,16 +48,19 @@ public class CartItems {
         this.productId = productId;
     }
 
-    public CartItems(int quantity, Long userIdx, Long productId) {
+    public CartItems(int quantity, Long userIdx, Long productId, boolean state) {
         this.quantity = quantity;
         this.userIdx = userIdx;
         this.productId = productId;
+        this.state = state;
     }
 
 
     public CartItems() {
 
     }
+
+
 }
 
 

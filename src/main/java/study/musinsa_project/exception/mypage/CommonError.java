@@ -24,7 +24,8 @@ public enum CommonError implements ErrorCode {
     PRODUCT_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당 상품을 찾을 수 없습니다.", "정보를 다시 확인해 주세요"),
     CART_ITEMS_NOT_ADDED(HttpStatus.BAD_REQUEST, "장바구니에 상품 추가를 실패 했습니다. ", "상품 주문 수량을 다시 확인해주세요."),
     PRODUCT_NOT_ORDERED(HttpStatus.BAD_REQUEST, "상품 주문에 실패 했습니다.", "상품 주문 수량을 다시 확인해주세요."),
-    USER_CASHES_NOT_ENOUGH(HttpStatus.BAD_REQUEST, "잔액 부족으로 상품 주문에 실패 했습니다.", "잔액을 확인해주세요.");
+    USER_CASHES_NOT_ENOUGH(HttpStatus.BAD_REQUEST, "잔액 부족으로 상품 주문에 실패 했습니다.", "잔액을 확인해주세요."),
+    CART_ITEMS_OVERLAP(HttpStatus.BAD_REQUEST, "해당 상품이 장바구니에 이미 존재합니다.","해당 상품이 장바구니에 이미 존재합니다.");
 
     private final HttpStatus status;
     private final String message;

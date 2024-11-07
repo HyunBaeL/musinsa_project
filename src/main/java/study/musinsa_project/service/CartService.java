@@ -13,6 +13,7 @@ import study.musinsa_project.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +47,13 @@ public class CartService {
 
     public CartItemsResponse createCartItem(CartItemsRequestDTO cartItemsRequestDTO) {
 
+        Optional<CartItems> existCartItem = cartItemsRepository.findByUserIdxAndProductIdAndState(cartItemsRequestDTO.getUserIdx(),cartItemsRequestDTO.getProductId(),true);
+
+        if(existCartItem.isPresent()){
+            throw new MyPageException(CommonError.CART_ITEMS_OVERLAP,CommonError.CART_ITEMS_OVERLAP.getMessage());
+        }
+
+
         int amount = productRepository.findById(cartItemsRequestDTO.getProductId()).orElseThrow(
                 () -> new MyPageException(CommonError.CART_ITEMS_NOT_FOUND,CommonError.CART_ITEMS_NOT_FOUND.getMessage())).getAmount();
 
@@ -53,7 +61,7 @@ public class CartService {
             throw new MyPageException(CommonError.CART_ITEMS_NOT_ADDED, CommonError.CART_ITEMS_NOT_ADDED.getMessage()+ String.format("(현재 남은 수량 : %d 개)",amount));
         }
 
-        CartItems item =cartItemsRepository.save(new CartItems(cartItemsRequestDTO.getQuantity(),cartItemsRequestDTO.getUserIdx(),cartItemsRequestDTO.getProductId()));
+        CartItems item =cartItemsRepository.save(new CartItems(cartItemsRequestDTO.getQuantity(),cartItemsRequestDTO.getUserIdx(),cartItemsRequestDTO.getProductId(),true));
 
         return CartItemsResponse.builder()
                 .message("상품이 장바구니에 추가되었습니다.")
