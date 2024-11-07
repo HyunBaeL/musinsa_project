@@ -26,7 +26,6 @@ public class LoginService {
             throw new RuntimeException("이미 탈퇴한 계정입니다.");
         }
 
-        // 비밀번호 검증
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }

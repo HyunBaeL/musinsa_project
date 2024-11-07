@@ -21,12 +21,12 @@ public class SignUpService {
         String email = signUpRequest.getEmail();
         String address = signUpRequest.getAddress();
         String phone = signUpRequest.getPhone();
+        // null일 경우 default값 넣기
         String referenceId = (signUpRequest.getReferenceId() != null) ? signUpRequest.getReferenceId() : "dummy";
-        // default값이 잘 안들어가서 서비스에 추가
         Integer cashes = (signUpRequest.getCashes() != null) ? signUpRequest.getCashes() : 0;
         String profile_img = (signUpRequest.getProfile_img() != null) ? signUpRequest.getProfile_img() : "default_profile.png";
 
-        // 탈퇴한 회원 username기준으로 다시 회원가입 못하게
+        // 탈퇴한 회원 username 기준으로 다시 회원가입 못하게
         if(usersRepository.existsByUserNameAndStatus(userName,UserStatus.N)){
             return "탈퇴한 회원이므로 회원가입 안됩니다.";
         }

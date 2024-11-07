@@ -23,8 +23,6 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 완전히 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/signup").permitAll()
-                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
