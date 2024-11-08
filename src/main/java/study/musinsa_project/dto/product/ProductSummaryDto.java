@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 public class ProductSummaryDto
 {
+    private Long id;
     private List<String> imgs;
     private String itemName;
     private int price;
