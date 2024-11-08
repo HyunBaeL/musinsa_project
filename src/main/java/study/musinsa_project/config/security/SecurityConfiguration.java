@@ -25,7 +25,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                .requiresChannel(channelRequestMatcherRegistry ->
+                        channelRequestMatcherRegistry.anyRequest().requiresSecure()); // 모든 요청 https로 리다이렉트
         return http.build();
     }
 
